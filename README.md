@@ -1,0 +1,18 @@
+# Instant-Group-Chat
+A web application that allows users to send and retrieve data, modelled as a group chat app, that is biult with Django and AJAX
+![Screenshot (338)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/60243fd3-bc60-49cd-a056-4b24d8ee236e)
+![Screenshot (339)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/bde4139d-7b73-401b-a0e9-3dc42629f025)
+![Screenshot (340)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/02f56883-100b-4700-b2a7-7802030af98c)
+![Screenshot (341)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/3ca742bb-1b09-48ba-87da-ded4905de2bf)
+![Screenshot (342)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/830f7d47-8492-4c52-a46c-b147403f4280)
+![Screenshot (343)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/32036ea8-3855-4766-badf-ce4c3453b59a)
+![Screenshot (344)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/82ba19f6-d4df-403f-9905-d84b94eebc00)
+![Screenshot (345)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/b334816a-7120-4823-b021-1fbf48d69125)
+![Screenshot (346)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/95a71c7b-6aeb-46f2-b4c0-9e6fca3ee059)
+![Screenshot (347)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/afb7aa7b-afe2-40f7-948c-200eef61a21d)
+![Screenshot (348)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/cd344911-9b4a-495c-b601-933880dc8e74)
+![Screenshot (349)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/ca21398a-a2ae-41e2-a8dd-c1e1c1250500)
+![Screenshot (350)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/6afe7478-6795-482e-bd25-144b927c422b)
+![Screenshot (351)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/9c7d2217-144e-495c-8573-278826cee2df)
+![Screenshot (352)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/696b9fc3-2adf-4543-af1f-45ebac275d7e)
+![Screenshot (337)](https://github.com/engraya/Instant-Group-Chat/assets/115407251/832397c4-28f6-4f70-a767-dba9740c4e38)
