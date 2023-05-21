@@ -49,8 +49,12 @@ def send(request):
 def getMessages(request, room):
     room_details = Room.objects.get(name=room)
 
-    messages = Message.objects.filter(room=room_details.id)
-    return JsonResponse({"messages":list(messages.values())})
+    messages = list(Message.objects.filter(room=room_details.id).order_by("date").values())
+    
+    for message in messages:
+        message["date"] = message["date"].strftime("%d-%m-%Y %H:%M:%S")
+    
+    return JsonResponse({"messages": messages})
 
 
 def mainPage(request):
@@ -105,6 +109,7 @@ def logoutPage(request):
     logout(request)
     messages.info(request, "You have successfully logged out.") 
     return redirect("home")
+    
 
 def profilePage(request):
     context = {}
