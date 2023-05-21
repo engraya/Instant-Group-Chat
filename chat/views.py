@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from chat.models import Room, Message
 from django.http import HttpResponse, JsonResponse
 from .forms import UserRegistrationForm
@@ -6,51 +6,59 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
-# Create your views here.
-
 
 def home(request):
+    if request.method == "POST":
+        # get form data
+        room = request.POST.get('room_name')
+        username = request.POST.get('username')
+        
+        # get data if it exists or create a new object
+        room, _ = Room.objects.get_or_create(name=room)
+        
+        # redirect to chat room
+        return redirect(reverse("room", args=[room.name]) + f"?username={username}")
+        
     return render(request, 'home.html')
+
 
 def room(request, room):
     username = request.GET.get('username')
-    room_details = Room.objects.get(name=room)
+    room_details = get_object_or_404(Room, name=room)
     return render(request, 'room.html', {
         'username': username,
-        'room': room,
         'room_details': room_details
     })
 
-def checkview(request):
-    room = request.POST['room_name']
-    username = request.POST['username']
-
-    if Room.objects.filter(name=room).exists():
-        return redirect('/'+room+'/?username='+username)
-    else:
-        new_room = Room.objects.create(name=room)
-        new_room.save()
-        return redirect('/'+room+'/?username='+username)
 
 def send(request):
-    message = request.POST['message']
-    username = request.POST['username']
-    room_id = request.POST['room_id']
-
-    new_message = Message.objects.create(value=message, user=username, room=room_id)
-    new_message.save()
+    message = request.POST.get('message')
+    username = request.POST.get('username')
+    room_id = request.POST.get('room_id')
+    
+    # create message object instance
+    Message.objects.create(
+        value=message,
+        user=username,
+        room=room_id
+    )
+    
     return HttpResponse('Message sent successfully')
+
 
 def getMessages(request, room):
     room_details = Room.objects.get(name=room)
 
-    messages = Message.objects.filter(room=room_details.id)
-    return JsonResponse({"messages":list(messages.values())})
+    messages = list(Message.objects.filter(room=room_details.id).order_by("date").values())
+    
+    for message in messages:
+        message["date"] = message["date"].strftime("%d-%m-%Y %H:%M:%S")
+    
+    return JsonResponse({"messages": messages})
 
 
 def mainPage(request):
     return render(request, 'main.html')
-
 
 
 def registerPage(request):
@@ -59,30 +67,38 @@ def registerPage(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, "Registration Sucessfull.")
-            return redirect("/")
-        messages.error(request, "Unsuccessfull Registration. Invalid Credentials Provided, Try Again later..")
+            
+            # alert success
+            messages.success(request, "Registration Sucessful.")
+            return redirect("home")
+        
+        # alert error 
+        messages.error(request, "Unsuccessful Registration. Invalid Credentials Provided, Try Again later..")
+        return redirect("registerPage")
+        
     form = UserRegistrationForm()
     context = {'form' : form}
     return render(request, "registerPage.html", context)
-
 
 
 def loginPage(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = request.POST['username']
-            password = request.POST['password']
+            # get form data
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
                 messages.info(request, f"User Succesfully logged in, You are now logged in as {username}.")
-                return redirect("/")
-            else:
-                messages.error(request,"Invalid username or password.")
-        else:
+                return redirect("home")
+                
             messages.error(request,"Invalid username or password.")
+            return redirect("loginPage")
+        messages.error(request,"Invalid username or password.")
+        return redirect("loginPage")
 
     form = AuthenticationForm()
     context = {'form' : form}
@@ -92,8 +108,10 @@ def loginPage(request):
 def logoutPage(request):
     logout(request)
     messages.info(request, "You have successfully logged out.") 
-    return redirect("/")
+    return redirect("home")
+    
 
 def profilePage(request):
     context = {}
     return render(request, "profilePage.html", context)
+

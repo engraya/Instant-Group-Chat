@@ -62,7 +62,7 @@
 </head>
 
 <body>
-    <h2 id="head" style="float: center;">Group - {{room}}</h2>
+    <h2 id="head" style="float: center;">Group - {{room_details.name}}</h2>
     <hr>
 
     <div id="display">
@@ -75,7 +75,7 @@
             setInterval(function() {
                 $.ajax({
                     type: 'GET',
-                    url: "/getMessages/{{room}}/",
+                    url: "/getMessages/{{room_details.name}}/",
                     success: function(response) {
                         console.log(response);
                         $("#display").empty();
@@ -132,7 +132,7 @@
             {% csrf_token %}
             <input type="hidden" name="username" id="username" value="{{username}}" />
             <input type="hidden" name="room_id" id="room_id" value="{{room_details.id}}" />
-            <input type="text" name="message" id="message" width="100px" />
+            <input type="text" name="message" id="message" width="100px" required />
             <input type="submit" value="Send Message">
         </form>
     </div>
