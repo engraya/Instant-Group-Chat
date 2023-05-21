@@ -66,6 +66,10 @@
         <div class="card-body">
             <h2 class="text-center">REGISTER</h2>
             <br>
+            {% for message in messages %}
+            	<li>{{ message }}</li>
+            {% endfor %}
+            <br>
             <form action="" method="POST">
                 {% csrf_token %}
                 <div class="form-group">

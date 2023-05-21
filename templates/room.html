@@ -75,7 +75,7 @@
             setInterval(function() {
                 $.ajax({
                     type: 'GET',
-                    url: "/getMessages/{{room}}/",
+                    url: "/getMessages/{{room_details.name}}/",
                     success: function(response) {
                         console.log(response);
                         $("#display").empty();
