@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from chat.models import Room, Message
 from django.http import HttpResponse, JsonResponse
 from .forms import UserRegistrationForm
@@ -10,7 +10,19 @@ from django.contrib.auth.forms import AuthenticationForm
 
 
 def home(request):
+    if request.method == "POST":
+        # get form data
+        room = request.POST.get('room_name')
+        username = request.POST.get('username')
+        
+        # get data if it exists or create a new object
+        room, _ = Room.objects.get_or_create(name=room)
+        
+        # redirect to chat room
+        return redirect(reverse("room", args=[room.name]) + f"?username={username}")
+        
     return render(request, 'home.html')
+
 
 def room(request, room):
     username = request.GET.get('username')
@@ -20,16 +32,6 @@ def room(request, room):
         'room_details': room_details
     })
 
-def checkview(request):
-    room = request.POST['room_name']
-    username = request.POST['username']
-
-    if Room.objects.filter(name=room).exists():
-        return redirect('/'+room+'/?username='+username)
-    else:
-        new_room = Room.objects.create(name=room)
-        new_room.save()
-        return redirect('/'+room+'/?username='+username)
 
 def send(request):
     message = request.POST['message']
@@ -40,6 +42,7 @@ def send(request):
     new_message.save()
     return HttpResponse('Message sent successfully')
 
+
 def getMessages(request, room):
     room_details = Room.objects.get(name=room)
 
@@ -49,7 +52,6 @@ def getMessages(request, room):
 
 def mainPage(request):
     return render(request, 'main.html')
-
 
 
 def registerPage(request):
@@ -64,7 +66,6 @@ def registerPage(request):
     form = UserRegistrationForm()
     context = {'form' : form}
     return render(request, "registerPage.html", context)
-
 
 
 def loginPage(request):
@@ -96,3 +97,4 @@ def logoutPage(request):
 def profilePage(request):
     context = {}
     return render(request, "profilePage.html", context)
+
