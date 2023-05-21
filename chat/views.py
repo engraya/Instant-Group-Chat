@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from chat.models import Room, Message
 from django.http import HttpResponse, JsonResponse
 from .forms import UserRegistrationForm
@@ -14,10 +14,9 @@ def home(request):
 
 def room(request, room):
     username = request.GET.get('username')
-    room_details = Room.objects.get(name=room)
+    room_details = get_object_or_404(Room, name=room)
     return render(request, 'room.html', {
         'username': username,
-        'room': room,
         'room_details': room_details
     })
 
